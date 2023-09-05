@@ -16,7 +16,7 @@ def scrape_selenium():
     # put url here
     url = ""
     # put url here
-    driver = webdriver.Chrome("C:\Web_driver\chromedriver.exe")
+    driver = webdriver.Chrome()
     driver.get(url)
     # opening the url with selenium
     
