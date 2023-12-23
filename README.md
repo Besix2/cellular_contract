@@ -34,7 +34,4 @@ start the programm with python3 cellular_contract.py
 ```
 
 
-### P.S. 
-```
-I made this programm in less than a day so it might have some flaws. The prices were scraped with really bad scraper so I had to add them manually so they are be outdated in 2 months ore so.
-```
+
