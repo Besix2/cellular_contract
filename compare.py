@@ -13,11 +13,12 @@ import json
 def main():
     html_cache()
 
+#loads the json directory from the file
 def read_dictionary_from_file():
     with open("price_cache.txt", 'r', encoding="utf-8") as file:
         data = json.loads(file.read())
         return data
-    
+# gets the price and than writes it to the cache file   
 def cache_price(phone_name):
     price_cache_path = "price_cache.txt"
     price_cache = read_dictionary_from_file()
@@ -27,6 +28,7 @@ def cache_price(phone_name):
         json.dump(price_cache, file, indent=4)
     return price
 
+#check if price is cached else cache it
 def check_price_cache(phone_name):
     with open("price_cache.txt", 'r', encoding="utf-8") as file:
         data = json.loads(file.read())
@@ -42,17 +44,20 @@ def get_price(phone_name):
     base_url = f"https://www.zoxs.de/ankauf_suche.html?q={phone_name}"
     driver = webdriver.Chrome(options=options)
     driver.get(base_url)
+    #handling cookie button
     cookie_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="btnAccept"]')))
     cookie_button.click()
     
     soup = BeautifulSoup(driver.page_source, "html.parser")
     grid = soup.findAll(class_="col-6 col-md-4 px-1 text-center offer-tile")
+    #checking every result
     for item in grid:
         if item == "\n":
             continue
         extracted_name = item.find(class_="bottom").text
         phone_name_split = [*phone_name]
         extracted_name_split = [*extracted_name]
+        #check if result matches the phone name
         if all(letter in extracted_name_split for letter in phone_name_split):
             link_element = item.find(class_="text-dark nav-link p-0 rounded offer-tile-klickarea")
             phone_sell_url = "https://www.zoxs.de/" + link_element["href"]
@@ -71,6 +76,7 @@ def get_price(phone_name):
             except Exception as error:
                 print(error)
                 return 0
+            #manually adding prices that couldnt be resolved by the code because the phone name is misleading
         else:
             print("\n")
             print(phone_name)
