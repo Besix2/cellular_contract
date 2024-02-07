@@ -10,18 +10,25 @@ import re
 import json 
 
 
-def main():
-    for i in html_cache():
-        print(i)
+def main(filter_price):
+    return html_cache(filter_price)
+
+def get_path(path):
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    # Construct paths to the files
+    full_path = os.path.join(current_directory, path).replace("/", "\\")
+    return full_path
+    
+
 
 #loads the json directory from the file
 def read_dictionary_from_file():
-    with open("price_cache.txt", 'r', encoding="utf-8") as file:
+    with open(get_path("cache/price_cache.txt"), 'r', encoding="utf-8") as file:
         data = json.loads(file.read())
         return data
 # gets the price and than writes it to the cache file   
 def cache_price(phone_name):
-    price_cache_path = "price_cache.txt"
+    price_cache_path = get_path("cache/price_cache.txt")
     price_cache = read_dictionary_from_file()
     price = get_price(phone_name)
     price_cache[phone_name] = price
@@ -31,7 +38,7 @@ def cache_price(phone_name):
 
 #check if price is cached else cache it
 def check_price_cache(phone_name):
-    with open("price_cache.txt", 'r', encoding="utf-8") as file:
+    with open(get_path("cache/price_cache.txt"), 'r', encoding="utf-8") as file:
         data = json.loads(file.read())
         if phone_name in data:
             return data[phone_name]
@@ -102,7 +109,7 @@ def scrape_selenium():
     options.add_argument('--headless')
 
     # put url here
-    url = "https://www.handyhase.de/samsung/galaxy-s23/#data-volume=5&download-speed=99999&monthly-costs=99999&onetimecosts=99999&device-rom=99999&phone-options=99999&contract-period=99999&cancelable-automatic-data-renewal=99999&classification=99999&providerId=99999&shopId=99999&sort=4&young=0&data5g=0&combined=0&esim=0&multicard=0&landline-number=0&device5g=0&cellular-network=1%2C3%2C5&deviceId=1056"
+    url = "https://www.handyhase.de/handy-mit-vertrag/#data-volume=5&download-speed=99999&monthly-costs=99999&onetimecosts=99999&device-rom=99999&phone-options=99999&contract-period=99999&cancelable-automatic-data-renewal=99999&manufacturerId=99999&classification=99999&providerId=99999&shopId=99999&sort=4&young=0&data5g=0&combined=0&esim=0&multicard=0&landline-number=0&device5g=0&cellular-network=1%2C3%2C5"
     # put url here
     driver = webdriver.Chrome(options=options)
     driver.get(url)
@@ -135,19 +142,19 @@ def scrape_selenium():
 
     return driver.page_source
 
-def html_cache(): #check if html is cached if not cache it
+def html_cache(filter_price): #check if html is cached if not cache it
     skip_element = []
-    if os.path.getsize("cache.html") < 1:
+    if os.path.getsize(get_path("cache/cache.html")) < 1:
         html = scrape_selenium()
-        with open("cache.html", "w", encoding="utf-8") as file:
+        with open(get_path("cache/cache.html"), "w", encoding="utf-8") as file:
             file.write(html)
-        return soup_process(html, skip_element)
+        return soup_process(html, skip_element, filter_price)
     else:
-        with open("cache.html", "r", encoding="utf-8") as file:
+        with open(get_path("cache/cache.html"), "r", encoding="utf-8") as file:
             html = file.read()
-    return soup_process(html, skip_element)
+    return soup_process(html, skip_element, filter_price)
         
-def soup_process(page_source, skip_element): #function to compare pricess
+def soup_process(page_source, skip_element, filter_price): #function to compare pricess
     last_price = 9999
     last_data = 0
     last_phone_name = "test"
@@ -185,9 +192,9 @@ def soup_process(page_source, skip_element): #function to compare pricess
         # getting all the data
         phone_price = check_price_cache(phone_name)
         Final_price = (average_montly_price * 24 - float(phone_price)) / 24
-        if Final_price < last_price:
+        # if Final_price < last_price:
         # basicly a filter
-        # if Final_price < 4 and cellular_data > last_data:
+        if Final_price <= filter_price and cellular_data > last_data:
             last_data = cellular_data
             last_price = Final_price
             last_contract_url = contract_url
@@ -204,5 +211,6 @@ def soup_process(page_source, skip_element): #function to compare pricess
     return [last_price,last_phone_name,last_contract_url]
 
     
+if __name__ == "__main__":
+    main(6)
 
-main()
