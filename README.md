@@ -29,8 +29,9 @@ def scrape_selenium():
     # put url here
 ```
 #### Execution
+start the programm with:
 ```
-start the programm with python3 cellular_contract.py
+ python3 cellular_contract.py
 ```
 
 
