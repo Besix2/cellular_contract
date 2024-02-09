@@ -21,12 +21,13 @@ def result_page():
 
 @app.route("/submit", methods=["POST"])
 def submit():
+
     if request.method == "POST":
         text_value = float(request.form.get("options"))
         from compare import main
         result = main(text_value)
-        datastore.phone_name = result[0]
-        datastore.monthly_price = result[1]
+        datastore.monthly_price = result[0]
+        datastore.phone_name = result[1]
         datastore.deal_link = result[2]
         return redirect(url_for("result_page"))
 

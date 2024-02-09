@@ -3,16 +3,86 @@
 
 <head>
     <style>
-       
+        .body{
+            background-color: gray;
+        }
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            
+        }
+        .main-box {
+            background-color: #f2f3f5;
+            padding: 50px;
+            width: 732px;
+            height: 558px;
+            border-radius: 7px;
+            display: flex;
+            justify-content: center;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+        }
+        .linkout {
+            background-color: rgb(214, 214, 214);
+            position: absolute;
+            width: 600px;
+            margin-top: 60px;
+            height: 70px;
+            border-radius: 7px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+            outline: 2px solid #b0b0b0;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            
+        }
+        .link_url {
+            position: absolute;
+            text-decoration: none;
+            color: black;
+            font-size: 30px;
+            font-family: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-weight: 500;
+            color: #7a7a7a;
+
+        }
+        .average-price {
+            position: absolute;
+            width: 300px;
+            height: 50px;
+            background-color: rgb(221, 221, 221);
+            margin-top: 180px;
+
+            border-radius: 7px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+            outline: 2px solid #b0b0b0;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+        p {
+            font-weight: 500;
+            color: #7a7a7a;
+            font-size: 20px;
+            font-family: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+         
     </style>
 </head>
 
-<body>
-<div class="results">
-    <p>{{phone_name}}</p>
-    <p>{{phone_price}}</p>
-    <a href={{deal_link}}>deal_url</a>
-</div>
+<body class="body">
+    <div  class="center main-box">
+        <div class="linkout">
+            <a class="link_url" href={{deal_link}}>Deal Url</a>
+        </div>
+        <div class="average-price">
+            <p>{{monthly_price}}</p>
+        </div>
+    </div>
 </body>
 
 </html>

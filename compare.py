@@ -8,6 +8,7 @@ import time
 import os
 import re
 import json 
+import cProfile
 
 
 def main(filter_price):
@@ -59,6 +60,8 @@ def get_price(phone_name):
     soup = BeautifulSoup(driver.page_source, "html.parser")
     grid = soup.findAll(class_="col-6 col-md-4 px-1 text-center offer-tile")
     #checking every result
+    if len(grid) < 1:
+        return 0
     for item in grid:
         if item == "\n":
             continue
@@ -89,13 +92,13 @@ def get_price(phone_name):
                 print(error)
                 return 0
             #manually adding prices that couldnt be resolved by the code because the phone name is misleading
-
-    print("\n")
-    print(phone_name)
-    print("Link: " + f"https://www.zoxs.de/ankauf_suche.html?q={html_phone_name}")
-    manual_price = float(input("Manuelle Preiseingabe: ").replace(",","."))
-    return manual_price
-    pass
+        else:
+            print("\n")
+            print(phone_name)
+            print("Link: " + f"https://www.zoxs.de/ankauf_suche.html?q={html_phone_name}")
+            manual_price = float(input("Manuelle Preiseingabe: ").replace(",","."))
+            return manual_price
+            pass
 def get_html(url):   
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
@@ -116,7 +119,7 @@ def scrape_selenium():
     # opening the url with selenium
     
     # Handling cookies consent
-    consent_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="CookieBoxSaveButton"]')))
+    consent_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="BorlabsCookieBox"]/div/div/div[2]/div/div/div[2]/div/div/div/div/div/div[1]/div/div[2]/div/div[2]/button')))
     consent_button.click()
     
     
@@ -142,6 +145,7 @@ def scrape_selenium():
 
     return driver.page_source
 
+
 def html_cache(filter_price): #check if html is cached if not cache it
     skip_element = []
     if os.path.getsize(get_path("cache/cache.html")) < 1:
@@ -153,7 +157,7 @@ def html_cache(filter_price): #check if html is cached if not cache it
         with open(get_path("cache/cache.html"), "r", encoding="utf-8") as file:
             html = file.read()
     return soup_process(html, skip_element, filter_price)
-        
+       
 def soup_process(page_source, skip_element, filter_price): #function to compare pricess
     last_price = 9999
     last_data = 0
@@ -194,11 +198,18 @@ def soup_process(page_source, skip_element, filter_price): #function to compare 
         Final_price = (average_montly_price * 24 - float(phone_price)) / 24
         # if Final_price < last_price:
         # basicly a filter
-        if Final_price <= filter_price and cellular_data > last_data:
-            last_data = cellular_data
-            last_price = Final_price
-            last_contract_url = contract_url
-            last_phone_name = phone_name
+        if filter_price == 0:
+            if Final_price < last_price:
+                last_data = cellular_data
+                last_price = Final_price
+                last_contract_url = contract_url
+                last_phone_name = phone_name
+        else:
+            if Final_price <= filter_price and cellular_data > last_data:
+                last_data = cellular_data
+                last_price = Final_price
+                last_contract_url = contract_url
+                last_phone_name = phone_name
     
     if "Refurbished" in str(get_html(last_contract_url)):
         print("\n" + last_contract_url)
@@ -212,5 +223,5 @@ def soup_process(page_source, skip_element, filter_price): #function to compare 
 
     
 if __name__ == "__main__":
-    main(6)
+    main()
 

@@ -24,61 +24,69 @@
             justify-content: center;
             box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
         }
-        .price-parent-box{
-            background-color: rgb(255, 255, 255);
-            height: 80px;
-            margin-top: 30px;
+        .input-field {
             width: 600px;
-            border-radius: 7px;
+            height: 80px;
+            background-color: rgb(255, 255, 255);
+            margin-top: 30px;
             outline: 2px solid #b0b0b0;
+            border-radius: 7px;
+            border: 0;
             box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-            line-height: 0%;
-            padding-left: 20px;
-            position: relative;
-
-            
-
-        }
-        .price-box-text {
             font-size: 40px;
             font-family: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            color: #d9d9d9;
+            color: black;
             font-weight: 500;
             letter-spacing: 0.1px;
         }
-        .price-box-description-parent{
-            margin-top: -30px;
-            /* background-color: aqua; */
-            position: absolute; /* Add absolute positioning */
-            top: 0; /* Align to the top of the price-parent-box */
-            left: 0; /* Align to the left */
-            width: 100%; /* Occupy full width of the price-parent-box */
-            height: 30px; /* Occupy full height of the price-parent-box */
-            display: flex; /* Use flexbox to align content */
-            align-items: center; /* Center vertically */
-            justify-content: left;
+        .input-field::placeholder{
+            color: #d9d9d9;
         }
-        .ps-box{
-            margin-top: 90px;
-            /* background-color: aqua; */
-            position: absolute; /* Add absolute positioning */
-            top: 0; /* Align to the top of the price-parent-box */
-            left: 0; /* Align to the left */
-            width: 100%; /* Occupy full width of the price-parent-box */
-            height: 30px; /* Occupy full height of the price-parent-box */
-            display: flex; /* Use flexbox to align content */
-            align-items: center; /* Center vertically */
-            justify-content: left;
+        input:focus::placeholder {
+            color: transparent;
+            
         }
-        .ps-box-text {
+        input:focus{
+            color: black;
+        }
+        .form{
+            display: flex;
+            justify-content: center;
+        }
+        .start-button{
+           margin-top: 350px; 
+           position: absolute;
+           width: 200px;
+           border: 0;
+           height: 50px;
+           outline: 2px solid #b0b0b0;
+           font-family: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+           border-radius: 7px;
+           box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+           font-size: 20px;
+           font-weight: 500;
+        }
+        .start-button:hover{
+            background-color: #82CD47;
+            outline: 2px solid #54B435;
+        }
+        .ps-box-tutorial{
+            position: absolute;
+            margin-top: 100px;
+            width: 600px;
+            text-align: left;
+        }
+        .ps-box-tutorial-text{
             font-size: 17px;
             font-weight: 500;
             color: #a7a7a7;
             font-family: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; 
         }
-            
-        
-    
+        .price-box-description-parent{
+            position: absolute;
+            width: 600px;
+            margin-top: -18px;
+        }
         .price-box-description {
             font-size: 20px;
             font-weight: 500;
@@ -95,26 +103,17 @@
 
 <body class="body">
     <div  class="center main-box">
-        <div class="price-parent-box"> 
-            <div class="price-box-description-parent"> <!-- Add a div on top -->
-                <p class="price-box-description">Preis:</p>
-            </div>
-            <div class="ps-box"> <!-- Add a div on top -->
-                <p class="ps-box-text">0 = günstigster Vertrag</p>
-            </div>
-            <p class="price-box-text">10</p>
+        <div class="price-box-description-parent">
+            <p class="price-box-description">Preis:</p>
+        </div>
+        <form action="{{ url_for('.submit') }}" method="post" class="form">
+            <input type="text" name="options" placeholder="10" class="input-field" />
+            <input type="submit" value="start" class="start-button">
+        </form>
+        <div class="ps-box-tutorial">
+            <p class="ps-box-tutorial-text">0 = günstigster Vertrag</p>
         </div>
     </div>
 </body>
 
 </html>
-<!-- 
-    <form action="{{ url_for('.submit') }}" method="post">
-        <div class="start">
-            <input type="submit" value="start" class="start-button" />
-        </div>
-        <div class="filter-options">
-            <label for="option1">Preis</label>
-            <input type="text" name="options" value="0" id="option1" class="price-field" />
-        </div>
-    </form> -->
