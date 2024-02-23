@@ -21,7 +21,7 @@ git clone https://github.com/Besix2/cellular_contract.git
 pip install -r requirements.txt
 ```
 
-#### go to [Handyhase](https://www.handyhase.de/handy-mit-vertrag/#data-volume=2&download-speed=99999&monthly-costs=99999&onetimecosts=99999&device-rom=99999&phone-options=99999&contract-period=99999&cancelable-automatic-data-renewal=99999&manufacturerId=99999&classification=99999&providerId=99999&shopId=99999&sort=4&young=1&data5g=0&combined=1&esim=0&multicard=0&landline-number=0&device5g=0&cellular-network=) and select you filter options and copy the url to url = "".
+#### go to [Handyhase](https://www.handyhase.de/handy-mit-vertrag/#data-volume=2&download-speed=99999&monthly-costs=99999&onetimecosts=99999&device-rom=99999&phone-options=99999&contract-period=99999&cancelable-automatic-data-renewal=99999&manufacturerId=99999&classification=99999&providerId=99999&shopId=99999&sort=4&young=1&data5g=0&combined=1&esim=0&multicard=0&landline-number=0&device5g=0&cellular-network=) and select you filter options and copy the url to url = "" in comapre.py.
 ```
 def scrape_selenium():
     # put url here
@@ -31,7 +31,12 @@ def scrape_selenium():
 #### Execution
 start the programm with:
 ```
- python3 cellular_contract.py
+ python3 app.py
+```
+
+The website is reachable at:
+```
+127.0.0.1:5000
 ```
 
 
