@@ -2,9 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for
 from livereload import Server
 import sys
 
-
-sys.path.insert(0, "C:\\Users\\Myuse\\Downloads\\cellular_contract-main (1)\\cellular_contract-main")
-print()
 app = Flask(__name__)
 
 @app.route('/')
@@ -36,4 +33,4 @@ def submit():
     
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
